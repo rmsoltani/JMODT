@@ -10,6 +10,7 @@ dist
 develop-eggs
 .installed.cfg
 .log
+.vscode
 
 data
 output
