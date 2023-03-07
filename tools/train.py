@@ -78,7 +78,7 @@ def main():
 
     # create dataloader & network & optimizer
     train_set, train_loader = create_dataloader(logger, split=cfg.TRAIN.SPLIT)
-    val_set, val_loader = create_dataloader(logger, split=cfg.TRAIN.VAL_SPLIT) if args.train_with_eval else None, None
+    val_set, val_loader = create_dataloader(logger, split=cfg.TRAIN.VAL_SPLIT) if args.train_with_eval else (None, None)
 
     fn_decorator = train_functions.model_joint_fn_decorator()
 

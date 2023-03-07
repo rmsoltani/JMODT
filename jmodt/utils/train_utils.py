@@ -184,27 +184,28 @@ class Trainer:
                             for key, val in eval_dict.items():
                                 self.tb_log.add_scalar('val_' + key, val, trained_epoch)
 
-                if prev_train_loss != -1 and prev_val_loss != -1:
-                    if train_loss_epoch < prev_train_loss and val_loss_epoch > prev_val_loss:
-                        counter += 1
-                        cur_logger.info("Bad train")
-                        if counter > stop_thres:
-                            cur_logger.info("Early stopping")
-                            break
-                    else:
-                        counter = 0
-                else:
-                    prev_train_loss = train_loss_epoch
-                    prev_val_loss = val_loss_epoch
 
-                if val_loss_epoch < min_val_loss:
-                    min_val_loss = val_loss_epoch
-                    ckpt_name = os.path.join(self.ckpt_dir, 'best_model')
-                    if isinstance(self.model, torch.nn.DataParallel):
-                        model_state = self.model.module.state_dict()
-                    else:
-                        model_state = self.model.state_dict()
-                    save_checkpoint({'model_state': model_state}, filename=ckpt_name)
+                        if prev_train_loss != -1 and prev_val_loss != -1:
+                            if train_loss_epoch < prev_train_loss and val_loss_epoch > prev_val_loss:
+                                counter += 1
+                                cur_logger.info("Bad train")
+                                if counter > stop_thres:
+                                    cur_logger.info("Early stopping")
+                                    break
+                            else:
+                                counter = 0
+                        else:
+                            prev_train_loss = train_loss_epoch
+                            prev_val_loss = val_loss_epoch
+
+                        if val_loss_epoch < min_val_loss:
+                            min_val_loss = val_loss_epoch
+                            ckpt_name = os.path.join(self.ckpt_dir, 'best_model')
+                            if isinstance(self.model, torch.nn.DataParallel):
+                                model_state = self.model.module.state_dict()
+                            else:
+                                model_state = self.model.state_dict()
+                            save_checkpoint({'model_state': model_state}, filename=ckpt_name)
 
                 pbar = tqdm.tqdm(total=len(train_loader), leave=False, desc='train')
                 pbar.set_postfix(dict(total_it=it))
