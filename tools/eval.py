@@ -73,7 +73,7 @@ def eval_joint_detection(logger):
     total_roi_recalled_bbox_list = [0] * 5
     cnt = final_total = total_cls_acc = total_cls_acc_refined = total_rpn_iou = 0
 
-    progress_bar = tqdm.tqdm(total=len(dataloader), leave=True, desc='test' if args.test else 'eval')
+    progress_bar = tqdm.tqdm(total=len(dataloader), leave=True, desc='test' if args.test else 'eval', disable=os.environ.get("DISABLE_TQDM", False))
     for data in dataloader:
         cnt += 1
         sample_id = data['sample_id']
@@ -337,7 +337,7 @@ def eval_tracking(logger):
     for seq_id in seq_list:
         sample_ids = seq2sample_dict[seq_id]
         out_file = open(os.path.join(tracking_res_dir, f'{seq_id}.txt'), 'w+')
-        tbar = tqdm.tqdm(total=len(sample_ids), desc=seq_id, dynamic_ncols=True, leave=True)
+        tbar = tqdm.tqdm(total=len(sample_ids), desc=seq_id, dynamic_ncols=True, leave=True, disable=os.environ.get("DISABLE_TQDM", False))
         car_tracker.reset()
         with torch.no_grad():
             for sample_id in sample_ids:

@@ -88,7 +88,7 @@ class Trainer:
         nan_dict = {}
 
         # eval one epoch
-        with tqdm.tqdm(val_loader, leave=False, desc='val') as tbar:
+        with tqdm.tqdm(val_loader, leave=False, desc='val', disable=os.environ.get("DISABLE_TQDM", False)) as tbar:
             for data in tbar:
                 loss, tb_dict, disp_dict = self.model_fn_eval(self.model, data)
                 if loss > 0:
@@ -123,8 +123,8 @@ class Trainer:
         counter = 0
         scaler = torch.cuda.amp.GradScaler()
 
-        with tqdm.trange(start_epoch, n_epochs, desc='epochs') as tbar, \
-                tqdm.tqdm(total=len(train_loader), leave=False, desc='train') as pbar:
+        with tqdm.trange(start_epoch, n_epochs, desc='epochs', disable=os.environ.get("DISABLE_TQDM", False)) as tbar, \
+                tqdm.tqdm(total=len(train_loader), leave=False, desc='train', disable=os.environ.get("DISABLE_TQDM", False)) as pbar:
 
             for epoch in tbar:
                 # train one epoch
@@ -207,5 +207,5 @@ class Trainer:
                                 model_state = self.model.state_dict()
                             save_checkpoint({'model_state': model_state}, filename=ckpt_name)
 
-                pbar = tqdm.tqdm(total=len(train_loader), leave=False, desc='train')
+                pbar = tqdm.tqdm(total=len(train_loader), leave=False, desc='train', disable=os.environ.get("DISABLE_TQDM", False))
                 pbar.set_postfix(dict(total_it=it))
