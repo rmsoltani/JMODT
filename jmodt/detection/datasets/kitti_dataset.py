@@ -242,7 +242,8 @@ class KittiDataset(Dataset):
         else:
             choice = np.arange(0, len(pts_rect), dtype=np.int32)
             while self.npoints > len(choice):
-                extra_choice = np.random.choice(choice, self.npoints % len(choice), replace=False)
+                picks = max(self.npoints % len(choice), 1)
+                extra_choice = np.random.choice(choice, picks, replace=False)
                 choice = np.concatenate((choice, extra_choice), axis=0)
             np.random.shuffle(choice)
 
