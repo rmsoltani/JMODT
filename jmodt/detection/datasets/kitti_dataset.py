@@ -273,8 +273,12 @@ class KittiDataset(Dataset):
             gt_tids = np.zeros((gt_obj_list.__len__()), dtype=np.float32)
 
             for k, obj in enumerate(gt_obj_list):
-                gt_boxes3d[k, 0:3], gt_boxes3d[k, 3], gt_boxes3d[k, 4], gt_boxes3d[k, 5], gt_boxes3d[k, 6] \
-                    = obj.pos, obj.h, obj.w, obj.l, obj.ry
+                gt_boxes3d[k, 0:3] = obj.pos
+                gt_boxes3d[k, 3] = obj.h
+                gt_boxes3d[k, 4] = obj.w
+                gt_boxes3d[k, 5] = obj.l
+                gt_boxes3d[k, 6] = obj.ry
+
                 gt_alpha[k] = obj.alpha
                 gt_tids[k] = obj.score
 

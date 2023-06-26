@@ -111,7 +111,11 @@ class Trainer:
         elif 'iou' in eval_dict:
             cur_performance = eval_dict['iou']
 
-        return sum(total_loss) / len(total_loss) if len(total_loss) > 0 else 0, eval_dict, cur_performance
+        return (
+            (sum(total_loss) / len(total_loss) if len(total_loss) > 0 else 0), 
+            eval_dict, 
+            cur_performance
+        )
 
     def train(self, start_it, start_epoch, n_epochs, train_loader, val_loader=None, stop_thres=5):
         eval_frequency = self.eval_frequency if self.eval_frequency > 0 else 1
